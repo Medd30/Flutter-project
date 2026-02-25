@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/layout :: layout(~{::section})}">
+<section>
+
+    <div class="card" style="margin-bottom:14px;">
+        <h2 style="margin:0 0 8px;">Books</h2>
+
+        <form method="get" action="/admin/books" style="display:flex; gap:10px; flex-wrap:wrap;">
+            <input name="q" th:value="${q}" placeholder="Search by title..."
+                   style="flex:1; min-width:220px; padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:rgba(0,0,0,.25); color:#fff;" />
+            <input name="category" th:value="${category}" placeholder="Category..."
+                   style="min-width:180px; padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:rgba(0,0,0,.25); color:#fff;" />
+            <button type="submit"
+                    style="padding:10px 14px; border-radius:12px; border:0; background:#22c55e; color:#06131f; font-weight:700;">
+                Filter
+            </button>
+            <a href="/admin/books"
+               style="padding:10px 14px; border-radius:12px; border:1px solid rgba(255,255,255,.12); text-decoration:none; color:#e5e7eb;">
+                Reset
+            </a>
+        </form>
+    </div>
+
+    <div class="card" style="margin-bottom:14px;">
+        <h3 style="margin:0 0 10px;">Add book</h3>
+
+        <form method="post"
+              action="/admin/books"
+              enctype="multipart/form-data"
+              style="display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:10px;">
+
+            <!-- Title -->
+            <input name="title" required placeholder="Title *"
+                   style="padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:rgba(0,0,0,.25); color:#fff;" />
+
+            <!-- Author -->
+            <input name="author" placeholder="Author"
+                   style="padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:rgba(0,0,0,.25); color:#fff;" />
+
+            <!-- Category -->
+            <input name="category" placeholder="Category"
+                   style="padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:rgba(0,0,0,.25); color:#fff;" />
+
+            <!-- PDF Upload -->
+            <div style="display:flex; flex-direction:column;">
+                <label style="font-size:13px; opacity:.8;">PDF File *</label>
+                <input type="file" name="pdfFile" accept="application/pdf" required
+                       style="padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:rgba(0,0,0,.25); color:#fff;" />
+            </div>
+
+            <!-- Cover Upload -->
+            <div style="display:flex; flex-direction:column; grid-column: 1 / -1;">
+                <label style="font-size:13px; opacity:.8;">Cover Image (optional)</label>
+                <input type="file" name="coverFile" accept="image/*"
+                       style="grid-column: 1 / -1; padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:rgba(0,0,0,.25); color:#fff;" />
+            </div>
+
+            <!-- Submit -->
+            <button type="submit"
+                    style="grid-column: 1 / -1; padding:10px 14px; border-radius:12px; border:0; background:#06b6d4; color:#06131f; font-weight:800;">
+                Create
+            </button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h3 style="margin:0 0 10px;">All books</h3>
+
+        <div style="overflow:auto;">
+            <table style="width:100%; border-collapse:collapse; font-size:13px;">
+                <thead>
+                <tr style="text-align:left; color:#cbd5e1;">
+                    <th style="padding:10px; border-bottom:1px solid rgba(255,255,255,.10);">ID</th>
+                    <th style="padding:10px; border-bottom:1px solid rgba(255,255,255,.10);">Title</th>
+                    <th style="padding:10px; border-bottom:1px solid rgba(255,255,255,.10);">Author</th>
+                    <th style="padding:10px; border-bottom:1px solid rgba(255,255,255,.10);">Category</th>
+                    <th style="padding:10px; border-bottom:1px solid rgba(255,255,255,.10);">PDF</th>
+                    <th style="padding:10px; border-bottom:1px solid rgba(255,255,255,.10);">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="b : ${books}">
+                    <td style="padding:10px; border-bottom:1px solid rgba(255,255,255,.06);" th:text="${b.id}"></td>
+                    <td style="padding:10px; border-bottom:1px solid rgba(255,255,255,.06);" th:text="${b.title}"></td>
+                    <td style="padding:10px; border-bottom:1px solid rgba(255,255,255,.06);" th:text="${b.author}"></td>
+                    <td style="padding:10px; border-bottom:1px solid rgba(255,255,255,.06);" th:text="${b.category}"></td>
+                    <td style="padding:10px; border-bottom:1px solid rgba(255,255,255,.06);">
+                        <span th:text="${b.pdfUrl}"></span>
+                    </td>
+                    <td style="padding:10px; border-bottom:1px solid rgba(255,255,255,.06);">
+                        <form th:action="@{'/admin/books/' + ${b.id} + '/delete'}" method="post" style="display:inline;">
+                            <button type="submit"
+                                    style="padding:8px 10px; border-radius:10px; border:0; background:#ef4444; color:white; font-weight:700;">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(books)}">
+                    <td colspan="6" style="padding:14px; color:#cbd5e1;">No books found.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</section>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="admin/layout :: layout">
+
+<th:block th:fragment="content">
+
+    <h2>Reviews Management</h2>
+
+    <table border="1" width="100%">
+        <tr>
+            <th>ID</th>
+            <th>Book</th>
+            <th>User</th>
+            <th>Rating</th>
+            <th>Comment</th>
+            <th>Actions</th>
+        </tr>
+
+        <tr th:each="r : ${reviews}">
+            <td th:text="${r.id}"></td>
+            <td th:text="${r.book.title}"></td>
+            <td th:text="${r.user.username}"></td>
+            <td th:text="${r.rating}"></td>
+            <td th:text="${r.comment}"></td>
+            <td>
+                <form th:action="@{|/admin/reviews/delete/${r.id}|}" method="post">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+</th:block>
+</html>

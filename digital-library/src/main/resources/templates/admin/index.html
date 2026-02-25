@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/layout :: layout(~{::section})}">
+<section>
+    <div class="card" style="margin-bottom:14px;">
+        <h2 style="margin:0 0 6px;">Admin Dashboard</h2>
+        <div style="color:#cbd5e1; font-size:13px;">
+            Quick navigation for managing users, books, and reviews.
+        </div>
+    </div>
+
+    <div class="grid">
+        <a class="tile" href="/admin/users">
+            <h3>Users</h3>
+            <p>Approve / reject users, edit info, and delete (soft delete).</p>
+        </a>
+
+        <a class="tile" href="/admin/books">
+            <h3>Books</h3>
+            <p>Add books, edit details, set PDF URL, manage covers.</p>
+        </a>
+
+        <a class="tile" href="/admin/reviews">
+            <h3>Reviews</h3>
+            <p>Moderate reviews & comments (we’ll implement next).</p>
+        </a>
+    </div>
+</section>
+</html>
